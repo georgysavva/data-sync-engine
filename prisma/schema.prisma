@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserAccount {
+  id             String           @id
+  service        Service
+  accessToken    String
+  StripeCustomers StripeCustomer[]
+  HubSpotContacts HubSpotContact[]
+}
+
+model StripeCustomer {
+  id    String @id
+  email String
+  data  Json
+
+  userAccount   UserAccount @relation(fields: [userAccountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userAccountId String
+
+  @@index([userAccountId], name: "StripeCustomer-userAccountId")
+}
+
+model HubSpotContact {
+  id            String      @id
+  email         String
+  data          Json
+  userAccount   UserAccount @relation(fields: [userAccountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userAccountId String
+
+  @@index([userAccountId], name: "HubSpotContact-userAccountId")
+}
+
+enum Service { 
+  STRIPE 
+  HUBSPOT  
+}

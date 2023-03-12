@@ -1,29 +1,17 @@
+import { PrismaClient } from '@prisma/client';
 import express from 'express';
+import { Engine } from './engine/engine.service.js';
+import { StripeWorker } from './engine/services/stripe.js';
 
-import { RateLimiterMemory } from 'rate-limiter-flexible';
-
-export function main(): void {
+async function main(): Promise<void> {
   const app = express();
   app.use(express.json());
+  const db = new PrismaClient();
+  const stripeWorker = new StripeWorker(db);
+  const engine = new Engine(db, stripeWorker);
 
-  const rateLimiter = new RateLimiterMemory({
-    points: 3, // 6 points
-    duration: 10, // Per second
-    execEvenly: true,
-  });
-
-  app.post('/sync', async (req, res) => {
-    console.log(req.body);
-    for (let i = 0; i < 5; i++) {
-      console.log(i);
-      try {
-        const res = await rateLimiter.consume('foo', 1);
-        console.log('success 1', res);
-      } catch (error) {
-        console.log('error 1', error);
-      }
-    }
-
+  app.post('/sync', async (_req, res) => {
+    await engine.sync();
     res.json({ message: 'success' });
   });
 
