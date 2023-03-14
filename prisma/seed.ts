@@ -10,6 +10,11 @@ async function main() {
         accessToken:
           'sk_test_51Mku9QKK1atT3zxBhioieGkzBcEzOvpWuoVGrcC6BpWB9Wlk48pLZoW6ar501ac3qe8JrQrGOetE1DwciwAeAzCb00hMbGXOI6',
       },
+      {
+        id: 'user:dse-2',
+        service: Service.HUBSPOT,
+        accessToken: 'pat-na1-fb93d324-e9f2-43f7-ab90-9acc15809248',
+      },
     ],
     skipDuplicates: true, // Skip 'Bobo'
   });

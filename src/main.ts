@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import express from 'express';
-import { Engine } from './engine/engine.service.js';
+import { Engine } from './engine/engine.js';
+import { HubspotWorker } from './engine/services/hubspot.js';
 import { StripeWorker } from './engine/services/stripe.js';
 
 async function main(): Promise<void> {
@@ -8,7 +9,8 @@ async function main(): Promise<void> {
   app.use(express.json());
   const db = new PrismaClient();
   const stripeWorker = new StripeWorker(db);
-  const engine = new Engine(db, stripeWorker);
+  const hubspotWorker = new HubspotWorker(db);
+  const engine = new Engine(db, stripeWorker, hubspotWorker);
 
   app.post('/sync', async (_req, res) => {
     await engine.sync();

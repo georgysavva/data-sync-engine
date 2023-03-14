@@ -7,8 +7,8 @@ export class StripeWorker {
 
   constructor(private db: PrismaClient) {
     this.apiRateLimiter = new RateLimiterMemory({
-      points: 100, // 6 points
-      duration: 1, // Per second
+      points: 100,
+      duration: 1,
       execEvenly: true,
     });
   }
@@ -23,6 +23,7 @@ export class StripeWorker {
     let startingAfter = undefined;
     let hasMore = true;
     let pageNumber = 1;
+    let totalSynced = 0;
     while (hasMore) {
       await this.apiRateLimiter.consume(userAccount.id, 1);
       console.log(
@@ -48,9 +49,10 @@ export class StripeWorker {
       startingAfter = customers[customers.length - 1].id;
       hasMore = customersResult.has_more;
       pageNumber += 1;
+      totalSynced += customers.length;
     }
     console.log(
-      `Finished syncing Stripe customers; userAccount=${userAccount.id}`,
+      `Finished syncing Stripe customers; userAccount=${userAccount.id}  totalSynced=${totalSynced}`,
     );
   }
 }
