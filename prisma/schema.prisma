@@ -15,7 +15,7 @@ model UserAccount {
   service        Service
   accessToken    String
   StripeCustomers StripeCustomer[]
-  HubSpotContacts HubSpotContact[]
+  HubspotContacts HubspotContact[]
 }
 
 model StripeCustomer {
@@ -29,14 +29,14 @@ model StripeCustomer {
   @@index([userAccountId], name: "StripeCustomer-userAccountId")
 }
 
-model HubSpotContact {
+model HubspotContact {
   id            String      @id
   email         String
   data          Json
   userAccount   UserAccount @relation(fields: [userAccountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userAccountId String
 
-  @@index([userAccountId], name: "HubSpotContact-userAccountId")
+  @@index([userAccountId], name: "HubspotContact-userAccountId")
 }
 
 enum Service { 

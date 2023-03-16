@@ -42,7 +42,7 @@ export class HubspotWorker {
         };
       });
 
-      await this.db.hubSpotContact.createMany({
+      await this.db.hubspotContact.createMany({
         data: contacts,
         skipDuplicates: true,
       });

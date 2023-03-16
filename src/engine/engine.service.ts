@@ -1,8 +1,8 @@
 import { PrismaClient, Service } from '@prisma/client';
-import { HubspotWorker } from './services/hubspot.js';
-import { StripeWorker } from './services/stripe.js';
+import { HubspotWorker } from './workers/hubspot.js';
+import { StripeWorker } from './workers/stripe.js';
 
-export class Engine {
+export class EngineService {
   constructor(
     private db: PrismaClient,
     private stripeWorker: StripeWorker,

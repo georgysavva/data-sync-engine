@@ -42,7 +42,8 @@
     "prisma": "^4.11.0",
     "rate-limiter-flexible": "^2.4.1",
     "stripe": "^11.14.0",
-    "tslib": "~2.4"
+    "tslib": "~2.4",
+    "zod": "^3.21.4"
   },
   "volta": {
     "node": "18.12.1"
