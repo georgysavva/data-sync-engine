@@ -12,7 +12,7 @@ export class EngineController {
 
   router(): Router {
     const router = Router({ mergeParams: true });
-    router.get('/sync', this.sync.bind(this));
+    router.post('/sync', this.sync.bind(this));
     return router;
   }
 }
