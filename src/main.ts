@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import cors from 'cors';
 import express from 'express';
 import { EngineController } from './engine/engine.controller.js';
 import { EngineService } from './engine/engine.service.js';
@@ -12,6 +13,7 @@ import { UsersService } from './users/users.service.js';
 async function main(): Promise<void> {
   const app = express();
   app.use(express.json());
+  app.use(cors());
 
   const prisma = new PrismaClient();
 

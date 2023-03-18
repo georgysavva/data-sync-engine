@@ -7,7 +7,8 @@ export class UserDataController {
   constructor(private service: UserDataService) {}
 
   async search(req: Request, res: Response): Promise<void> {
-    const searchDto = SearchDto.parse(req.body);
+    const searchDto = SearchDto.parse(req.query);
+
     const userData = await this.service.search(req.params.userId, searchDto);
     res.json(userData);
   }
