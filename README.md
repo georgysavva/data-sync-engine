@@ -6,12 +6,15 @@ The service also exposes and API to browse user accounts and search through thei
 
 ## How to run
 
+Docker and Node.js are required.
+
 1. Download the repo.
 2. `cd` to the root directory.
 3. Run `docker compose  up -d --build` to build the app Docker image and spin up the postgres and app services.
-4. Run `npx prisma migrate deploy` to roll out the db schema.
-5. Run `npx prisma db seed` to seed the database with initial data like user accounts and access tokens.
-6. The engine service is ready!
+4. Run `npm install`. We need this because `ts-node` is required to run the 6th step.
+5. Run `npx prisma migrate deploy` to roll out the db schema.
+6. Run `npx prisma db seed` to seed the database with initial data like user accounts and access tokens.
+7. The engine service is ready!
 
 ## How to trigger sync
 
