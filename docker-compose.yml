@@ -9,7 +9,19 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
-      - '5433:5432'
+      - '5432:5432'
+
+  app:
+    build:
+      context: .
+    image: georgysavva/data-sync-engine
+    ports:
+      - '8080:3000'
+    environment:
+      - DATABASE_URL=postgresql://myuser:mypassword@postgres:5432/postgres?schema=public
+
+    depends_on:
+      - postgres
 
 volumes:
   postgres:
