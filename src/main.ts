@@ -33,6 +33,7 @@ async function main(): Promise<void> {
   const usersRouter = usersController.router(userDataRouter);
   app.use('/users', usersRouter);
 
+  // Improvement: use environment variable.
   const port = 3000;
   app.listen(port, () => {
     return console.log(`Express is listening at http://0.0.0.0:${port}`);

@@ -7,6 +7,8 @@ export class HubspotWorker {
 
   constructor(private db: PrismaClient) {
     // Use the daily limit of 250,000 API calls because it's more strict than the burst one of 100 per 10 seconds.
+    // Improvement: take rate limit values from environment variables.
+    // Improvement: use an external storage for the rate limiter state like Redis. It will allow to preserve the data between app restarts.
     this.apiRateLimiter = new RateLimiterMemory({
       points: 250000,
       duration: 86400,
@@ -38,10 +40,11 @@ export class HubspotWorker {
           id: contactData.id,
           email: contactData.properties.email,
           userAccountId: userAccount.id,
+          // Improvement: there is probably a better way to do this.
           data: JSON.parse(JSON.stringify(contactData)),
         };
       });
-
+      // Improvement: make the sync process update already existing contacts and delete those that are no longer in Hubspot.
       await this.db.hubspotContact.createMany({
         data: contacts,
         skipDuplicates: true,

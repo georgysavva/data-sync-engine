@@ -6,6 +6,8 @@ export class StripeWorker {
   private apiRateLimiter: RateLimiterMemory;
 
   constructor(private db: PrismaClient) {
+    // Improvement: take rate limit values from environment variables.
+    // Improvement: use an external storage for the rate limiter state like Redis. It will allow to preserve the data between app restarts.
     this.apiRateLimiter = new RateLimiterMemory({
       points: 100,
       duration: 1,
@@ -38,10 +40,12 @@ export class StripeWorker {
           id: customerData.id,
           email: customerData.email,
           userAccountId: userAccount.id,
+          // Improvement: there is probably a better way to do this.
           data: JSON.parse(JSON.stringify(customerData)),
         };
       });
 
+      // Improvement: make the sync process update already existing contacts and delete those that are no longer in Hubspot.
       await this.db.stripeCustomer.createMany({
         data: customers,
         skipDuplicates: true,

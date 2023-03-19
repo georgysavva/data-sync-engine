@@ -12,6 +12,7 @@ export class EngineService {
   async sync(): Promise<void> {
     const userAccounts = await this.db.userAccount.findMany();
     for (const userAccount of userAccounts) {
+      // Improvement: sync each user account in a separate coroutine.
       if (userAccount.service === Service.STRIPE) {
         await this.stripeWorker.sync(userAccount);
       } else if (userAccount.service === Service.HUBSPOT) {
